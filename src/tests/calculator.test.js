@@ -1,4 +1,4 @@
-const { add, subtract, multiply, divide, calculate } = require('../calculator');
+const { add, subtract, multiply, divide, modulo, power, squareRoot, calculate } = require('../calculator');
 
 describe('Calculator - Basic Arithmetic Operations', () => {
 
@@ -135,8 +135,20 @@ describe('Calculator - Basic Arithmetic Operations', () => {
       expect(calculate(20, '/', 5)).toBe(4);
     });
 
+    test('should calculate modulo: calculate(5, "%", 2) = 1', () => {
+      expect(calculate(5, '%', 2)).toBe(1);
+    });
+
+    test('should calculate power: calculate(2, "^", 3) = 8', () => {
+      expect(calculate(2, '^', 3)).toBe(8);
+    });
+
+    test('should calculate square root: calculate(16, "sqrt") = 4', () => {
+      expect(calculate(16, 'sqrt')).toBe(4);
+    });
+
     test('should throw error for unknown operation', () => {
-      expect(() => calculate(5, '%', 3)).toThrow(/Unknown operation/);
+      expect(() => calculate(5, '@', 3)).toThrow(/Unknown operation/);
     });
 
     test('should throw error for unsupported operator "&"', () => {
@@ -171,6 +183,100 @@ describe('Calculator - Basic Arithmetic Operations', () => {
     test('should handle operations resulting in infinity-like values', () => {
       const result = divide(1, 1000000);
       expect(result).toBeGreaterThan(0);
+    });
+  });
+
+  describe('Modulo (%)', () => {
+    test('should calculate modulo with 5 % 2 = 1', () => {
+      expect(modulo(5, 2)).toBe(1);
+    });
+
+    test('should calculate modulo with negative numbers: (-10) % 3 = -1', () => {
+      expect(modulo(-10, 3)).toBe(-1);
+    });
+
+    test('should calculate modulo with even division: 10 % 5 = 0', () => {
+      expect(modulo(10, 5)).toBe(0);
+    });
+
+    test('should calculate modulo with large numbers: 100 % 7 = 2', () => {
+      expect(modulo(100, 7)).toBe(2);
+    });
+
+    test('should throw error when modulo by zero', () => {
+      expect(() => modulo(10, 0)).toThrow('Cannot perform modulo by zero');
+    });
+
+    test('should calculate modulo with decimals: 5.5 % 2 = 1.5', () => {
+      expect(modulo(5.5, 2)).toBeCloseTo(1.5);
+    });
+  });
+
+  describe('Power (^)', () => {
+    test('should calculate power with 2 ^ 3 = 8', () => {
+      expect(power(2, 3)).toBe(8);
+    });
+
+    test('should calculate power with 5 ^ 2 = 25', () => {
+      expect(power(5, 2)).toBe(25);
+    });
+
+    test('should calculate power with base 0: 0 ^ 5 = 0', () => {
+      expect(power(0, 5)).toBe(0);
+    });
+
+    test('should calculate power with exponent 0: 100 ^ 0 = 1', () => {
+      expect(power(100, 0)).toBe(1);
+    });
+
+    test('should calculate power with negative exponent: 2 ^ (-2) = 0.25', () => {
+      expect(power(2, -2)).toBe(0.25);
+    });
+
+    test('should calculate power with negative base: (-2) ^ 3 = -8', () => {
+      expect(power(-2, 3)).toBe(-8);
+    });
+
+    test('should calculate power with decimals: 2.5 ^ 2 = 6.25', () => {
+      expect(power(2.5, 2)).toBe(6.25);
+    });
+
+    test('should calculate power with fractional exponent: 16 ^ 0.5 = 4', () => {
+      expect(power(16, 0.5)).toBe(4);
+    });
+  });
+
+  describe('Square Root (sqrt)', () => {
+    test('should calculate square root with √16 = 4', () => {
+      expect(squareRoot(16)).toBe(4);
+    });
+
+    test('should calculate square root with √25 = 5', () => {
+      expect(squareRoot(25)).toBe(5);
+    });
+
+    test('should calculate square root with √0 = 0', () => {
+      expect(squareRoot(0)).toBe(0);
+    });
+
+    test('should calculate square root with √1 = 1', () => {
+      expect(squareRoot(1)).toBe(1);
+    });
+
+    test('should calculate square root with decimal: √2 ≈ 1.414', () => {
+      expect(squareRoot(2)).toBeCloseTo(1.414, 3);
+    });
+
+    test('should calculate square root with large number: √1000000 = 1000', () => {
+      expect(squareRoot(1000000)).toBe(1000);
+    });
+
+    test('should throw error when taking square root of negative number', () => {
+      expect(() => squareRoot(-16)).toThrow('Cannot take square root of a negative number');
+    });
+
+    test('should calculate square root with decimals: √6.25 = 2.5', () => {
+      expect(squareRoot(6.25)).toBe(2.5);
     });
   });
 });
